@@ -1,5 +1,6 @@
 SET FOREIGN_KEY_CHECKS=0;
 
+-- Enter seed values into department table
 INSERT INTO department (department_name)
 VALUES ("Human Resources"),
        ("Operations"),
@@ -7,6 +8,8 @@ VALUES ("Human Resources"),
        ("Instrumentation"),
        ("Management");
 
+-- Enter seed values into e_role table
+-- Assign department_id from department table
 INSERT INTO e_role (id, role_title, salary, department_id, e_role)
 VALUES (20, "Management", 150000, 5, "HR Supervisor"),
        (21, "HR", 120000, 1, "HR Lead A"),
@@ -32,6 +35,8 @@ VALUES (20, "Management", 150000, 5, "HR Supervisor"),
        (53, "Instrumentation", 950000, 4, "Tech C"),
        (54, "Instrumentation", 850000, 4, "Tech Trainee");
 
+-- Enter seed values into employee table
+-- Assign e_role_id from e_role
 INSERT INTO employee (id, first_name, last_name, e_role_id, manager_id)
 VALUES (1, "Irene", "Flemming", 20, 212),
        (2, "Mayble", "Payne", 21, 0),
