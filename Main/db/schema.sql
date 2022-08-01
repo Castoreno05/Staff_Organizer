@@ -16,9 +16,9 @@ CREATE TABLE e_role (
     e_role TEXT NOT NULL,
     FOREIGN KEY (department_id)
     -- Reference the table being used
-    REFERENCES department(id)
+    REFERENCES department(id),
     role_title VARCHAR(30) NOT NULL,
-    salary DECIMAL,
+    salary DECIMAL
 );
 
 CREATE TABLE employee (

@@ -23,3 +23,19 @@ const db = mysql.createConnection(
   },
   console.log("You have been connected to the staff_database.")
 );
+
+db.query('SELECT * FROM staff_db.department', function(err, results){
+    console.log(results);
+});
+
+db.query('SELECT * FROM staff_db.e_role', function (err, res){
+    console.log(res);
+});
+
+db.query('SELECT * FROM staff_db.employee', function (err, res){
+    console.log(res);
+});
+
+app.listen(PORT, () => {
+    console.log(`App Listening at http://localhost:${PORT}`);
+});
