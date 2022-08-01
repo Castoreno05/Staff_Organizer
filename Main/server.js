@@ -26,7 +26,7 @@ const db = mysql.createConnection(
 
 // View all departments
 app.get("/api/departments", (req, res) => {
-    // Returning department names from department table
+  // Returning department names from department table
   const sql = `SELECT department_name FROM department`;
   db.query(sql, (err, row) => {
     if (err) {
@@ -40,10 +40,28 @@ app.get("/api/departments", (req, res) => {
   });
 });
 
+// Add a department
+app.post("/api/new-department", ({ body }, res) => {
+    const sql = `INSERT INTO department (department_name)
+        VALUES (?)`;
+    const params = [body.department_name];
+  
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: body,
+      });
+    });
+  });
+
 // View all the roles
 app.get("/api/roles", (req, res) => {
-    // Returning roles from the e_role table
-  const sql = `SELECT e_role FROM e_role `;
+  // Returning roles from the e_role table
+  const sql = `SELECT erole FROM erole `;
   db.query(sql, (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -56,10 +74,10 @@ app.get("/api/roles", (req, res) => {
   });
 });
 
-// View all employees
-app.get("/api/employees", (req, res) => {
-    // Returning first and last name from employee table
-    const sql = `SELECT first_name, last_name FROM employee`;
+// View all of e_role
+app.get("/api/employee-roles", (req, res) => {
+    // Returning roles from the e_role table
+    const sql = `SELECT * FROM erole`;
     db.query(sql, (err, row) => {
       if (err) {
         res.status(500).json({ error: err.message });
@@ -71,7 +89,56 @@ app.get("/api/employees", (req, res) => {
       });
     });
   });
-  
+
+// View all employees
+app.get("/api/employees", (req, res) => {
+  // Returning first and last name from employee table
+  const sql = `SELECT * FROM employee`;
+  db.query(sql, (err, row) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: row,
+    });
+  });
+});
+
+// Add a role
+// app.post("/api/new-role", ({ body }, res) => {
+//     const sql = `INSERT INTO erole (id, role_title, salary, department_id, erole)
+//         VALUES (?)`;
+//     const params = [body];
+//     db.query(sql, params, (err, result) => {
+//       if (err) {
+//         res.status(400).json({ error: err.message });
+//         return;
+//       }
+//       res.json({
+//         message: "success",
+//         data: body,
+//       });
+//     });
+//   });
+
+// Add a employee
+// app.post("/api/new-employee", ({ body }, res) => {
+//     const sql = `INSERT INTO employee (id, first_name, last_name, erole_id, manager_id)
+//         VALUES (?)`;
+//     const params = [body];
+//     db.query(sql, params, (err, result) => {
+//       if (err) {
+//         res.status(400).json({ error: err.message });
+//         return;
+//       }
+//       res.json({
+//         message: "success",
+//         data: body,
+//       });
+//     });
+// });
 
 app.listen(PORT, () => {
   console.log(`App Listening at http://localhost:${PORT}`);
