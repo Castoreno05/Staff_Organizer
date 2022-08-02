@@ -58,26 +58,11 @@ app.post("/api/new-department", ({ body }, res) => {
     });
   });
 
-// View all the roles
-app.get("/api/roles", (req, res) => {
-  // Returning roles from the e_role table
-  const sql = `SELECT erole FROM erole `;
-  db.query(sql, (err, row) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: "success",
-      data: row,
-    });
-  });
-});
 
 // View all of e_role
-app.get("/api/employee-roles", (req, res) => {
+app.get("/api/roles", (req, res) => {
     // Returning roles from the e_role table
-    const sql = `SELECT * FROM erole`;
+    const sql = `SELECT role_title, erole FROM erole`;
     db.query(sql, (err, row) => {
       if (err) {
         res.status(500).json({ error: err.message });
@@ -90,10 +75,27 @@ app.get("/api/employee-roles", (req, res) => {
     });
   });
 
-// View all employees
+// Add a role
+app.post("/api/new-role", ({ body }, res) => {
+    const sql = `INSERT INTO erole (role_title, erole)
+        VALUES ("${body.role_title}", "${body.erole}");`;
+    const params = [body];
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: body,
+      });
+    });
+  });
+
+  // View all employees
 app.get("/api/employees", (req, res) => {
   // Returning first and last name from employee table
-  const sql = `SELECT * FROM employee`;
+  const sql = `SELECT first_name, last_name FROM employee`;
   db.query(sql, (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -106,39 +108,22 @@ app.get("/api/employees", (req, res) => {
   });
 });
 
-// Add a role
-// app.post("/api/new-role", ({ body }, res) => {
-//     const sql = `INSERT INTO erole (id, role_title, salary, department_id, erole)
-//         VALUES (?)`;
-//     const params = [body];
-//     db.query(sql, params, (err, result) => {
-//       if (err) {
-//         res.status(400).json({ error: err.message });
-//         return;
-//       }
-//       res.json({
-//         message: "success",
-//         data: body,
-//       });
-//     });
-//   });
-
 // Add a employee
-// app.post("/api/new-employee", ({ body }, res) => {
-//     const sql = `INSERT INTO employee (id, first_name, last_name, erole_id, manager_id)
-//         VALUES (?)`;
-//     const params = [body];
-//     db.query(sql, params, (err, result) => {
-//       if (err) {
-//         res.status(400).json({ error: err.message });
-//         return;
-//       }
-//       res.json({
-//         message: "success",
-//         data: body,
-//       });
-//     });
-// });
+app.post("/api/new-employee", ({ body }, res) => {
+    const sql = `INSERT INTO employee (first_name, last_name)
+        VALUES ("${body.first_name}","${body.last_name}");`;
+    const params = [body];
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      res.json({
+        message: "success",
+        data: body,
+      });
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`App Listening at http://localhost:${PORT}`);

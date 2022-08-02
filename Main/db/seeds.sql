@@ -26,17 +26,17 @@ VALUES (20, "Management", 150000, 5, "HR Supervisor"),
        (52, "Instrumentation", 950000, 4, "Tech B");
 -- Enter seed values into employee table
 -- Assign e_role_id from e_role
-INSERT INTO employee (id, first_name, last_name, erole_id, manager_id)
-VALUES (1, "Irene", "Flemming", 20, 212),
-       (2, "Mayble", "Payne", 21, NULL),
-       (3, "Connie", "Brooks", 22, NULL), 
-       (7, "Brian", "Ball", 30, 164),
-       (8, "Lucas", "Hunt", 31, NULL),
-       (9, "Warren", "Norris", 32, NULL),
-       (10, "Shane", "Arnold", 33, NULL),
-       (14, "Sonia", "Collins", 40, 951),
-       (15, "Tiffany", "Wilson", 41, NULL),
-       (16, "Martha", "Wolfe", 42, NULL),
-       (19, "Alonzo", "Wise", 50, 354),
-       (20, "Zachary", "Little", 51, NULL),
-       (21, "Henery", "Day", 52, NULL);
+INSERT INTO employee (first_name, last_name, erole_id, manager_id)
+VALUES ("Irene", "Flemming", 20, 212),
+       ("Mayble", "Payne", 21, NULL),
+       ("Connie", "Brooks", 22, NULL), 
+       ("Brian", "Ball", 30, 164),
+       ("Lucas", "Hunt", 31, NULL),
+       ("Warren", "Norris", 32, NULL),
+       ("Shane", "Arnold", 33, NULL),
+       ("Sonia", "Collins", 40, 951),
+       ("Tiffany", "Wilson", 41, NULL),
+       ("Martha", "Wolfe", 42, NULL),
+       ("Alonzo", "Wise", 50, 354),
+       ("Zachary", "Little", 51, NULL),
+       ("Henery", "Day", 52, NULL);

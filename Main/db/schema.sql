@@ -10,7 +10,7 @@ CREATE TABLE department (
 );
 
 CREATE TABLE erole (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     role_title VARCHAR(30) NOT NULL,
     erole TEXT NOT NULL,
     salary DECIMAL,
@@ -22,7 +22,7 @@ CREATE TABLE erole (
 );
 
 CREATE TABLE employee (
-    id INT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(75),
     last_name VARCHAR(75),
     -- Linked to e_role
@@ -30,5 +30,5 @@ CREATE TABLE employee (
     FOREIGN KEY (erole_id)
     -- Refernece the table being used
     REFERENCES erole(id),
-    manager_id INT
+    manager_id INT NULL
 );
