@@ -5,14 +5,14 @@ CREATE DATABASE staff_db;
 USE staff_db;
 -- Use the example from the instructions to create tables
 CREATE TABLE department (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     department_name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE erole (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    role_title VARCHAR(30) NOT NULL,
-    erole TEXT NOT NULL,
+    role VARCHAR(30) NOT NULL,
+    department TEXT NOT NULL,
     salary DECIMAL,
     -- Linked to the department
     department_id INT,
@@ -22,7 +22,7 @@ CREATE TABLE erole (
 );
 
 CREATE TABLE employee (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT PRIMARY KEY,
     first_name VARCHAR(75),
     last_name VARCHAR(75),
     -- Linked to e_role
