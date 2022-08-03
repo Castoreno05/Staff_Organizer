@@ -41,7 +41,7 @@ app.get("/api/departments", (req, res) => {
   });
 });
 
-// Add a department
+// // Add a department
 app.post("/api/new-department", ({ body }, res) => {
   const sql = `INSERT INTO department (id, department_name)
         VALUES (${body.id}, "${body.department_name}");`;
@@ -59,7 +59,7 @@ app.post("/api/new-department", ({ body }, res) => {
   });
 });
 
-// View all of e_role
+// // View all of e_role
 app.get("/api/roles", (req, res) => {
   // Returning roles from the e_role table
   const sql = `SELECT id, role, salary, department_id, department FROM erole`;
@@ -75,7 +75,7 @@ app.get("/api/roles", (req, res) => {
   });
 });
 
-// Add a role
+// // Add a role
 app.post("/api/new-role", ({ body }, res) => {
   const sql = `INSERT INTO erole (role, salary, department_id, department)
         VALUES ("${body.role}", ${body.salary}, ${body.department_id}, "${body.department}");`;
@@ -92,7 +92,7 @@ app.post("/api/new-role", ({ body }, res) => {
   });
 });
 
-// View all employees
+// // View all employees
 // Need to assign employees with managers
 app.get("/api/employees", (req, res) => {
   // Returning first and last name from employee table
@@ -109,7 +109,7 @@ app.get("/api/employees", (req, res) => {
   });
 });
 
-// Add a employee
+// // Add a employee
 app.post("/api/new-employee", ({ body }, res) => {
   // See if you can insert into multiple tables just like you can pull from multiple tables
   const sql =
@@ -152,22 +152,44 @@ app.put("/api/employees/:id", (req, res) => {
 });
 
 app.listen(PORT, () => {
-//   console.log(`App Listening at http://localhost:${PORT}`);
+  //   console.log(`App Listening at http://localhost:${PORT}`);
 });
 
-inquirer
-    .prompt([
-        {
-            type: 'list', 
-            message: 'What would you like to do?',
-            name: 'greetings',
-            choices: ['View all departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'Update employee role']
-        },
-    ])
-    .then((answers) => {
-        // Used for feedback from the questions answered
-        console.log(answers)
-    });
+async function init() {
+  let questions = [
+    {
+      type: "list",
+      name: "greetings",
+      message: "What would you like to do?",
+      choices: [
+        "View all departments",
+        "View all roles",
+        "View all employees",
+        "Add a department",
+        "Add a role",
+        "Add an employee",
+        "Update employee role",
+      ],
+    },
+  ];
 
+  var answers = await inquirer.prompt(questions);
 
-module.exports = app
+  if (answers.greetings === "View all departments") {
+    fetch("http://localhost:9001/api/departments")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  } 
+  else if (answers.greetings === "View all roles") {
+    fetch("http://localhost:9001/api/roles")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  } 
+  else if (answers.greetings === "View all employees") {
+    fetch("http://localhost:9001/api/employees")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  } 
+  
+}
+init();
