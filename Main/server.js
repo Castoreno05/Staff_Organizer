@@ -43,8 +43,8 @@ app.get("/api/departments", (req, res) => {
 
 // // Add a department
 app.post("/api/new-department", ({ body }, res) => {
-  const sql = `INSERT INTO department (id, department_name)
-        VALUES (${body.id}, "${body.department_name}");`;
+  const sql = `INSERT INTO department (department_name)
+        VALUES ("${body.department_name}");`;
   const params = [body];
 
   db.query(sql, params, (err, result) => {
@@ -62,7 +62,7 @@ app.post("/api/new-department", ({ body }, res) => {
 // // View all of e_role
 app.get("/api/roles", (req, res) => {
   // Returning roles from the e_role table
-  const sql = `SELECT id, role, salary, department_id, department FROM erole`;
+  const sql = `SELECT role, id, department_id, salary FROM erole`;
   db.query(sql, (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -77,8 +77,8 @@ app.get("/api/roles", (req, res) => {
 
 // // Add a role
 app.post("/api/new-role", ({ body }, res) => {
-  const sql = `INSERT INTO erole (role, salary, department_id, department)
-        VALUES ("${body.role}", ${body.salary}, ${body.department_id}, "${body.department}");`;
+  const sql = `INSERT INTO erole (role, salary, department_id)
+        VALUES ("${body.role}", ${body.salary}, ${body.department_id});`;
   const params = [body];
   db.query(sql, params, (err, result) => {
     if (err) {
@@ -96,7 +96,7 @@ app.post("/api/new-role", ({ body }, res) => {
 // Need to assign employees with managers
 app.get("/api/employees", (req, res) => {
   // Returning first and last name from employee table
-  const sql = `SELECT employee.id, employee.first_name, employee.last_name, erole.role, erole.department, erole.salary FROM erole JOIN employee ON erole.id = employee.id`;
+  const sql = `SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, erole.role, erole.department_id, erole.salary FROM erole JOIN employee ON erole.id = employee.id`;
   db.query(sql, (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
@@ -189,7 +189,40 @@ async function init() {
     fetch("http://localhost:9001/api/employees")
       .then((response) => response.json())
       .then((data) => console.log(data));
-  } 
+  }
+  else if (answers.greetings === "Add a department") {
+    let id = await inquirer.prompt({
+      type: "input",
+      name: "id",
+      message: "Enter a new department id",
+    });
+
+    let department_name = await inquirer.prompt({
+      type: "input",
+      name: "department_name",
+      message: "Enter the name of the department",
+    });
+    console.log(id,department_name);
+    
+    function createDepartment() {
+        const sql = `INSERT INTO department (id, department_name)
+        VALUES (${body.id}, "${body.department_name}");`;
+        const params = [body];
+
+        db.query(sql, params, (err, result) => {
+            if (err) {
+              res.status(400).json({ error: err.message });
+              return;
+            }
+            res.json({
+              message: "You have created a new department",
+              data: body,
+            });
+          });
+          createDepartment();
+    }
+
+  }
   
 }
 init();
