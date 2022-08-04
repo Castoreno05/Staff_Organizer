@@ -2,7 +2,7 @@
 const express = require("express");
 const inquirer = require("inquirer");
 const table = require("console.table");
-const routes = require('./routes/api');
+const routes = require("./routes/api");
 // Need mysql2
 const mysql = require("mysql2");
 
@@ -26,7 +26,6 @@ const db = mysql.createConnection(
   },
   console.log("You have been connected to the staff_db database")
 );
-
 
 // app.listen(PORT, () => {
 //     console.log(`App Listening at http://localhost:${PORT}`);
@@ -85,85 +84,136 @@ function init() {
 // Function to view all the departments
 async function viewDepartments() {
   const sql = `SELECT id, department_name FROM department`;
-  const [rows] = await db.promise().query(sql)
+  const [rows] = await db.promise().query(sql);
   console.table(rows);
   init();
 }
 // Function to view all the roles
 async function viewRoles() {
   const sql = `SELECT role, id, department_id, salary FROM erole`;
-  const [rows] = await db.promise().query(sql)
+  const [rows] = await db.promise().query(sql);
   console.table(rows);
+  init();
 }
 // Function to view all employees
 async function viewEmployees() {
   const sql = `SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, erole.role, erole.department_id, erole.salary FROM erole JOIN employee ON erole.id = employee.id`;
-  const [rows] = await db.promise().query(sql)
+  const [rows] = await db.promise().query(sql);
   console.table(rows);
+  init();
 }
 // function to add new department
 async function addDepartment() {
   const sql = `SELECT * FROM department`;
-  const [departments] = await db.promise().query(sql)
-  departments.map(({ id, department_name}) => ({ name: department_name, value: id}))
+  const [departments] = await db.promise().query(sql);
+  const departmentArray = departments.map(({ id, department_name }) => ({
+    name: department_name,
+    value: id,
+  }));
   // console.log(departmentArray)
   inquirer
     .prompt([
       {
-        type: 'input',
-        name: 'title',
-        message: 'What is the name of this department'
+        type: "input",
+        name: "title",
+        message: "What is the name of this department",
+      },
+    ])
+    .then(async (answers) => {
+      const departmentObj = { department_name: answers.title };
+      const sql = `INSERT INTO department SET ?`;
+      const response = await db.promise().query(sql, departmentObj);
+      if (response) {
+        const sql = `SELECT * FROM department`;
+        const [response] = await db.promise().query(sql);
+        console.table(response);
+        init();
       }
-    ]).then(async (answers) => {
-      const departmentObj = { department_name: answers}
-      sql = `INSERT INTO department SET ?`
-      const response = await db.promise().query(sql, departmentObj)
-      if(response){
-        const sql = `SElECT * FROM department`;
-        const [response] = await db.promise().query(sql)
-        console.table(response)
-      }
-    })
+    });
 }
 // Function to add new role
 async function addRole() {
   const sql = `SELECT id, department_name FROM department`;
-  const [departments] = await db.promise().query(sql)
-  const departmentArray = departments.map(({ id, department_name }) => ({ name: department_name, value: id }))
+  const [departments] = await db.promise().query(sql);
+  const departmentArray = departments.map(({ id, department_name }) => ({
+    name: department_name,
+    value: id,
+  }));
   // console.log(departmentArray);
   inquirer
-    .prompt([{
-      type: 'input',
-      name: 'title',
-      message: 'What role'
-    },
-    {
-      type: 'input',
-      name: 'salary',
-      message: 'how much'
-    },
-    {
-      type: 'list',
-      name: 'department',
-      message: 'Which department',
-      choices: departmentArray
-    }
-    ]).then(async (answers) => {
-      const roleObj = { role: answers.title, salary: answers.salary, department_id: answers.department }
-      const sql = 'INSERT INTO erole SET ?'
-      const response = await db.promise().query(sql, roleObj)
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "What is the name of this role?",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "What is the annual salary?",
+      },
+      {
+        type: "list",
+        name: "department",
+        message: "Which department does this role belong to?",
+        choices: departmentArray,
+      },
+    ])
+    .then(async (answers) => {
+      const roleObj = {
+        role: answers.title,
+        salary: answers.salary,
+        department_id: answers.department,
+      };
+      const sql = "INSERT INTO erole SET ?";
+      const response = await db.promise().query(sql, roleObj);
       // console.log({affectedRows});
       if (response) {
         const sql = `SELECT * FROM erole`;
-        const [response] = await db.promise().query(sql)
+        const [response] = await db.promise().query(sql);
         console.table(response);
+      } else {
+        console.log("Role add was not successful");
       }
-      else {
-        console.log('Role add was not successful');
-      }
-
-    })
+      init();
+    });
 }
-async function addEmployee() {
-  
-}
+// Function to add new employee
+// async function addEmployee() {
+//   const sql = `SELECT employee.first_name, employee.last_name, manager_id, erole.role`;
+//   const [employees] = await db.promise().query(sql);
+//   const employeesArray = employees.map(
+//     ({ first_name, last_name, manager_id, role }) => ({
+//       name: first_name,
+//       name: last_name,
+//       value: manager_id,
+//       name: role,
+//     })
+//   );
+//   inquirer
+//   .prompt([
+//     {
+//       type: "input",
+//       name: "first_name",
+//       message: "What is the first name of this employee?",
+//     },
+//     {
+//       type: "input",
+//       name: "last_name",
+//       message: "What is the last name of this employee?",
+//     },
+//     {
+//       type: "input",
+//       name: "manager_id",
+//       message: "How manages this employee?",
+//     },
+//     {
+//       type: "input",
+//       name: "role",
+//       message: "What is the role for this employee?",
+//     },
+//   ])
+//   .then(async (answers) => {
+//     console.log(answers)
+//   });
+// }
