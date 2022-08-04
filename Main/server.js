@@ -82,49 +82,88 @@ function init() {
       }
     });
 }
-
+// Function to view all the departments
 async function viewDepartments() {
   const sql = `SELECT id, department_name FROM department`;
   const [rows] = await db.promise().query(sql)
   console.table(rows);
   init();
 }
-
+// Function to view all the roles
+async function viewRoles() {
+  const sql = `SELECT role, id, department_id, salary FROM erole`;
+  const [rows] = await db.promise().query(sql)
+  console.table(rows);
+}
+// Function to view all employees
+async function viewEmployees() {
+  const sql = `SELECT employee.id, employee.first_name, employee.last_name, employee.manager_id, erole.role, erole.department_id, erole.salary FROM erole JOIN employee ON erole.id = employee.id`;
+  const [rows] = await db.promise().query(sql)
+  console.table(rows);
+}
+// function to add new department
+async function addDepartment() {
+  const sql = `SELECT * FROM department`;
+  const [departments] = await db.promise().query(sql)
+  departments.map(({ id, department_name}) => ({ name: department_name, value: id}))
+  // console.log(departmentArray)
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'What is the name of this department'
+      }
+    ]).then(async (answers) => {
+      const departmentObj = { department_name: answers}
+      sql = `INSERT INTO department SET ?`
+      const response = await db.promise().query(sql, departmentObj)
+      if(response){
+        const sql = `SElECT * FROM department`;
+        const [response] = await db.promise().query(sql)
+        console.table(response)
+      }
+    })
+}
+// Function to add new role
 async function addRole() {
   const sql = `SELECT id, department_name FROM department`;
   const [departments] = await db.promise().query(sql)
-  const departmentArray = departments.map(({id,department_name}) => ({name:department_name, value:id}))
-  console.log(departmentArray); 
+  const departmentArray = departments.map(({ id, department_name }) => ({ name: department_name, value: id }))
+  // console.log(departmentArray);
   inquirer
-  .prompt([{
+    .prompt([{
       type: 'input',
       name: 'title',
       message: 'What role'
-  },
-  {
-    type: 'input',
-    name: 'salary',
-    message: 'how much'
-  },
-  {
-    type: 'list',
-    name: 'department',
-    message: 'Which department',
-    choices: departmentArray
-  }
-  ]).then(async(answers) => {
-    const roleObj = {role:answers.title, salary:answers.salary, department_id:answers.department}
-    const sql = 'INSERT INTO erole SET ?'
-    const response = await db.promise().query(sql, roleObj)
-    // console.log({affectedRows});
-    if(response){
-      const sql = `SELECT * FROM erole`;
-      const [response] = await db.promise().query(sql)
-      console.table(response);
+    },
+    {
+      type: 'input',
+      name: 'salary',
+      message: 'how much'
+    },
+    {
+      type: 'list',
+      name: 'department',
+      message: 'Which department',
+      choices: departmentArray
     }
-    else{
-      console.log('Role add was not successful');
-    }
+    ]).then(async (answers) => {
+      const roleObj = { role: answers.title, salary: answers.salary, department_id: answers.department }
+      const sql = 'INSERT INTO erole SET ?'
+      const response = await db.promise().query(sql, roleObj)
+      // console.log({affectedRows});
+      if (response) {
+        const sql = `SELECT * FROM erole`;
+        const [response] = await db.promise().query(sql)
+        console.table(response);
+      }
+      else {
+        console.log('Role add was not successful');
+      }
 
-  })
+    })
+}
+async function addEmployee() {
+  
 }
