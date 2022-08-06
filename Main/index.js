@@ -1,8 +1,6 @@
-// Need express to be imported
-const express = require("express");
 const inquirer = require("inquirer");
 const table = require("console.table");
-const routes = require("./routes/api");
+
 // Need mysql2
 const mysql = require("mysql2");
 
@@ -48,7 +46,7 @@ function init() {
         "View all employees",
         "Add a department",
         "Add a role",
-        "Add an employee",
+        "Add an Employee",
         "Update employee role",
         "Quit",
       ],
@@ -178,42 +176,85 @@ async function addRole() {
       init();
     });
 }
-// Function to add new employee
-// async function addEmployee() {
-//   const sql = `SELECT employee.first_name, employee.last_name, manager_id, erole.role`;
-//   const [employees] = await db.promise().query(sql);
-//   const employeesArray = employees.map(
-//     ({ first_name, last_name, manager_id, role }) => ({
-//       name: first_name,
-//       name: last_name,
-//       value: manager_id,
-//       name: role,
-//     })
-//   );
-//   inquirer
-//   .prompt([
-//     {
-//       type: "input",
-//       name: "first_name",
-//       message: "What is the first name of this employee?",
-//     },
-//     {
-//       type: "input",
-//       name: "last_name",
-//       message: "What is the last name of this employee?",
-//     },
-//     {
-//       type: "input",
-//       name: "manager_id",
-//       message: "How manages this employee?",
-//     },
-//     {
-//       type: "input",
-//       name: "role",
-//       message: "What is the role for this employee?",
-//     },
-//   ])
-//   .then(async (answers) => {
-//     console.log(answers)
-//   });
-// }
+// Function to add an employee
+function addEmployee() {
+  db.query("SELECT * FROM erole", function (err, results) {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "firstName",
+          message: "What is the first name of this employee?",
+        },
+        {
+          type: "input",
+          name: "lastName",
+          message: "What is the last name of this employee?",
+        },
+        {
+          type: "list",
+          name: "managerId",
+          message: "Select the id of the manager for this employee",
+          choices: ["1", "3", "6"],
+        },
+        {
+          type: "list",
+          name: "role",
+          message: "What is the role for this employee?",
+          choices: results.map((role) => role.role),
+        },
+      ])
+      .then((answers) => {
+        console.log(answers);
+        let newRole = results.find((role) => role.role === answers.role);
+        db.query("INSERT INTO employee SET ?", {
+          first_name: answers.firstName,
+          last_name: answers.lastName,
+          erole_id: newRole.managerId,
+        });
+        console.table(answers);
+        init();
+      });
+  });
+}
+// Function to update an employee
+async function updateRole() {
+  const sql = `SELECT employee.id, employee.first_name, employee.last_name FROM employee`;
+  const [rows] = await db.promise().query(sql);
+
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "employeeId",
+        message: "What is the name of the employee you want to update.",
+        choices: rows.map(({ id, first_name, last_name }) => {
+          return { name: `${first_name} ${last_name}`, value: id };
+        }),
+      },
+    ])
+    .then(async (response) => {
+      const roleSql = `SELECT * FROM erole`;
+      const [roles] = await db.promise().query(roleSql);
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "roleId",
+            message: "What is the role that you would like to update",
+            choices: roles.map(({ id, role }) => {
+              return { name: role, value: id };
+            }),
+          },
+        ])
+        .then(async (updatedRole) => {
+          const updateSQL = `UPDATE employee SET erole_id = ? WHERE id = ?`;
+          const params = [updatedRole.roleId, response.employeeId];
+
+          await db.promise().query(updateSQL, params);
+          // console.log('roles saved')
+          init();
+        });
+    });
+}
