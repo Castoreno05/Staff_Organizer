@@ -3,16 +3,7 @@ const table = require("console.table");
 
 // Need mysql2
 const mysql = require("mysql2");
-
-// Enable a port and access to express in a variable
-const PORT = process.env.PORT || 9001;
-const app = express();
-
-// Middleware for express
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(routes);
-
+// Create connection to database
 const db = mysql.createConnection(
   {
     host: "localhost",
@@ -25,14 +16,8 @@ const db = mysql.createConnection(
   console.log("You have been connected to the staff_db database")
 );
 
-// app.listen(PORT, () => {
-//     console.log(`App Listening at http://localhost:${PORT}`);
-// });
-
-db.connect(function (err) {
-  if (err) throw err;
-  init();
-});
+// Calls for the main menu when index.js is started in terminal 
+init()
 
 function init() {
   inquirer
@@ -75,7 +60,7 @@ function init() {
           updateRole();
           break;
         case "Quit":
-          init();
+          db.end();
       }
     });
 }
