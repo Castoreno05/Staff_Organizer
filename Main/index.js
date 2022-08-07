@@ -190,7 +190,7 @@ function addEmployee() {
         },
       ])
       .then((answers) => {
-        console.log(answers);
+        // console.log(answers);
         let newRole = results.find((role) => role.role === answers.role);
         db.query("INSERT INTO employee SET ?", {
           first_name: answers.firstName,
