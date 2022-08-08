@@ -6,11 +6,11 @@ In this application you will be interacting with the terminal to view, add or up
 
 When the commands have been made in the terminal(See Installation on more information on how to install), the 
 
-main menu will apprear. Once a selection has been made the application will either view, add or update the database,
+main menu will apprear. Once a selection has been made the application will either view, add or update the 
 
-depending on the selection. Use this application to manipulate this databse and keep track of employees, managers and 
+database, depending on the selection. Use this application to manipulate this databse and keep track of employees, 
 
-their roles.
+managers and their roles.
 
 ---
 
