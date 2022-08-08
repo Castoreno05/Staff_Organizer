@@ -32,7 +32,7 @@ https://user-images.githubusercontent.com/105801681/183331588-908b434c-7623-4c84
 
 * On lines 12 & 15 enter your mysql login information
 
-* Open Intergrated Terminal
+* Open Intergrated Terminal from 'index.js'
 
 * Run 'mysql -u root -p' then enter a password if needed
 
