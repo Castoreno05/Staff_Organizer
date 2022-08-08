@@ -4,13 +4,13 @@
 
 In this application you will be interacting with the terminal to view, add or update data that is stored in a database. 
 
-When the commands have been made in the terminal(See Installation on more information on how to install), 
+When the commands have been made in the terminal(See Installation on more information on how to install), the 
 
-the main menu will apprear. Once a selection has been made the application will either view, add or update 
+main menu will apprear. Once a selection has been made the application will either view, add or update the 
 
-the database, depending on the selection. Use this application to manipulate this databse and keep track of 
+database, depending on the selection. Use this application to manipulate this databse and keep track of employees,
 
-employees, managers and their roles.
+managers and their roles.
 
 ---
 
