@@ -8,7 +8,7 @@ When the commands have been made in the terminal(See Installation on more inform
 
 main menu will apprear. Once a selection has been made the application will either view, add or update the 
 
-database, depending on the selection. Use this application to manipulate this databse and keep track of 
+database, depending on the selection. Use this application to manipulate the database and keep track of 
 
 employees, managers and their roles.
 
@@ -24,11 +24,11 @@ https://user-images.githubusercontent.com/105801681/183331588-908b434c-7623-4c84
 
 ## Installation
 
-(MUST have MySQL installed before using this application)
+(**MUST have MySQL installed before using this application**)
 
 * Clone Staff Organizer repository 
 
-* Navigate to 'index.js' and open the file
+* Navigate to 'index.js' located in the 'Main' folder, then open the file.
 
 * On lines 12 & 15 enter your mysql login information
 
