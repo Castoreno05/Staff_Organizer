@@ -4,7 +4,7 @@
 
 In this application you will be interacting with the terminal to view, add or update data that is stored in a database. 
 
-When the commands have been made in the terminal(See [Installation](#installation) on more information on how to install), the 
+When the commands have been made in the terminal (See [Installation](#installation) on more information on how to install), the 
 
 main menu will apprear. Once a selection has been made the application will either view, add or update the 
 
