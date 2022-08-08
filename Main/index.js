@@ -7,10 +7,10 @@ const mysql = require("mysql2");
 const db = mysql.createConnection(
   {
     host: "localhost",
-    user: "root",
+    user: "",
     // password is used for this account. If your connection
     // requires a password please insert here
-    password: "I69@WdHOH)(E1[E",
+    password: "",
     database: "staff_db",
   },
   console.log("You have been connected to the staff_db database")
