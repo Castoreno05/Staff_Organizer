@@ -8,9 +8,9 @@ When the commands have been made in the terminal(See Installation on more inform
 
 main menu will apprear. Once a selection has been made the application will either view, add or update the 
 
-database, depending on the selection. Use this application to manipulate this databse and keep track of employees, 
+database, depending on the selection. Use this application to manipulate this databse and keep track of 
 
-managers and their roles.
+employees, managers and their roles.
 
 ---
 
