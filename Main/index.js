@@ -3,6 +3,8 @@ const table = require("console.table");
 
 // Need mysql2
 const mysql = require("mysql2");
+
+
 // Create connection to database
 const db = mysql.createConnection(
   {
